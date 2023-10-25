@@ -1,13 +1,55 @@
-/* Your Code Here */
-
-/*
- We're giving you this function. Take a look at it, you might see some usage
- that's new and different. That's because we're avoiding a well-known, but
- sneaky bug that we'll cover in the next few lessons!
-
- As a result, the lessons for this function will pass *and* it will be available
- for you to use if you need it!
- */
+function createEmployeeRecord(employeeData) {
+    return {
+      firstName: employeeData[0],
+      familyName: employeeData[1],
+      title: employeeData[2],
+      payPerHour: employeeData[3],
+      timeInEvents: [],
+      timeOutEvents: [],
+    };
+  }
+  
+  function createEmployeeRecords(arrOfArrays) {
+    return arrOfArrays.map(createEmployeeRecord);
+  }
+  
+  function createTimeInEvent(employee, dateTime) {
+    const [date, time] = dateTime.split(' ');
+  
+    employee.timeInEvents.push({
+      type: "TimeIn",
+      hour: parseInt(time, 10),
+      date,
+    });
+  
+    return employee;
+  }
+  
+  function createTimeOutEvent(employee, dateTime) {
+    const [date, time] = dateTime.split(' ');
+  
+    employee.timeOutEvents.push({
+      type: "TimeOut",
+      hour: parseInt(time, 10),
+      date,
+    });
+  
+    return employee;
+  }
+  
+  function hoursWorkedOnDate(employee, date) {
+    const timeInEvent = employee.timeInEvents.find(event => event.date === date);
+    const timeOutEvent = employee.timeOutEvents.find(event => event.date === date);
+  
+    const hoursWorked = (timeOutEvent.hour - timeInEvent.hour) / 100;
+    return hoursWorked;
+  }
+  
+  function wagesEarnedOnDate(employee, date) {
+    const hours = hoursWorkedOnDate(employee, date);
+    const payRate = employee.payPerHour;
+    return hours * payRate;
+  }
 
 const allWagesFor = function () {
     const eligibleDates = this.timeInEvents.map(function (e) {
